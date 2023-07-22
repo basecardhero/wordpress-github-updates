@@ -13,6 +13,7 @@
 .eslintrc
 .eslintrc.js
 .git*
+.makenv*
 .phpunit.result.cache
 .travis.yml
 behat.yml
@@ -34,6 +35,7 @@ phpcs.xml.dist
 phpunit.xml
 phpunit.xml.dist
 release
+replace.php
 resources
 setup-tests.js
 tests
