@@ -12,6 +12,7 @@
  * Domain Path: /languages
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Update URI: wordpress-github-updates
  *
  * @package WordPress_Github_Updates
  */
@@ -24,4 +25,6 @@ define( 'WORDPRESS_GITHUB_UPDATES_FILE', __FILE__ );
 define( 'WORDPRESS_GITHUB_UPDATES_DIRECTORY', dirname( WORDPRESS_GITHUB_UPDATES_FILE ) );
 
 require_once WORDPRESS_GITHUB_UPDATES_DIRECTORY . '/includes/functions.php';
+require_once WORDPRESS_GITHUB_UPDATES_DIRECTORY . '/includes/update-functions.php';
 require_once WORDPRESS_GITHUB_UPDATES_DIRECTORY . '/includes/callbacks.php';
+require_once WORDPRESS_GITHUB_UPDATES_DIRECTORY . '/includes/update-callbacks.php';
