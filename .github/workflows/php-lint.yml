@@ -1,0 +1,35 @@
+name: PHP Lint
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    php_lint:
+        name: PHP ${{ matrix.php_version }} Linting
+        runs-on: ubuntu-22.04
+        strategy:
+            matrix:
+                php_version: ['7.4', '8.0', '8.1']
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '${{ matrix.php_version }}'
+
+            - uses: 'ramsey/composer-install@v2'
+              with:
+                  composer-options: '--ignore-platform-reqs --optimize-autoloader'
+
+            - name: Run php lint
+              run: composer lint

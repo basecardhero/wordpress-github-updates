@@ -1,0 +1,44 @@
+{
+	"type": "project",
+	"license": "GPL 2+",
+	"authors": [
+		{
+			"name": "BaseCardHero",
+			"email": "ryan@basecardhero.com",
+			"homepage": "https://basecardhero.com",
+			"role": "Developer"
+		}
+	],
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"fakerphp/faker": "^1.21",
+		"php-parallel-lint/php-parallel-lint": "^1.3.2",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"phpunit/phpunit": "^9.5",
+		"squizlabs/php_codesniffer": "^3.7",
+		"wp-coding-standards/wpcs": "^2.3",
+		"yoast/phpunit-polyfills": "^2.0"
+	},
+	"scripts": {
+		"all": [
+			"@lint",
+			"@phpcs",
+			"@test"
+		],
+		"lint": "parallel-lint -e php --no-colors --exclude vendor --exclude node_modules --exclude resources .",
+		"phpcs": "phpcs",
+		"phpcs:fix": "phpcbf",
+		"phpcs:fix:tests": "phpcbf ./tests/integration",
+		"test": "phpunit"
+	},
+	"config": {
+		"preferred-install": "dist",
+		"sort-packages": true,
+		"optimize-autoloader": true,
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
+}

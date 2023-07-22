@@ -1,0 +1,50 @@
+name: PHP Tests
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    phpunit:
+        name: PHP ${{ matrix.php_version }}, WordPress ${{ matrix.wordpress_version }}
+        runs-on: ubuntu-22.04
+        strategy:
+            matrix:
+                php_version: ['7.4', '8.0', '8.1']
+                wordpress_version: ['6.0', '6.1', '6.2']
+        services:
+            mysql:
+                image: mysql:5.7
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: false
+                    MYSQL_ROOT_PASSWORD: password
+                    MYSQL_DATABASE: unit_tests_db
+                ports:
+                    - 3306
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '${{ matrix.php_version }}'
+                  extensions: gd, mbstring, mysqli, zip
+
+            - name: Setup WordPress tests
+              run: /bin/bash tests/bin/install-wp-tests.sh unit_tests_db root password 127.0.0.1:${{ job.services.mysql.ports[3306] }} ${{ matrix.wordpress_version }} latest true
+
+            - uses: 'ramsey/composer-install@v2'
+              with:
+                  composer-options: '--ignore-platform-reqs --optimize-autoloader'
+
+            - name: Run phpunit
+              run: composer test

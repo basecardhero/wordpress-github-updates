@@ -1,0 +1,6 @@
+PLUGIN_DIR_NAME=wordpress-github-updates
+TEST_DB_NAME=wordpress_github_updates_tests
+TEST_DB_USER=
+TEST_DB_PASSWORD=
+TEST_DB_HOST=
+WC_VERSION=false

@@ -1,0 +1,32 @@
+name: PHP Code Standards
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    phpcs:
+        name: PHP Codesniffer
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.0'
+
+            - uses: 'ramsey/composer-install@v2'
+              with:
+                  composer-options: '--ignore-platform-reqs --optimize-autoloader'
+
+            - name: Run php codesniffer
+              run: composer phpcs

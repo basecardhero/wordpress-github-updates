@@ -1,0 +1,14 @@
+*.log
+*.sql
+*.gz
+*.zip
+.DS_Store
+.makenv
+.phpunit.result.cache
+assets/
+node_modules/
+svn/
+Thumbs.db
+vendor/
+release/
+wp-cli.local.yml
