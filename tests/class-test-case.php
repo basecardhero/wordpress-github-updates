@@ -168,4 +168,19 @@ class Test_Case extends \WP_UnitTestCase {
 	protected function create_post( $data = [] ) {
 		return $this->factory->post->create_and_get( $data );
 	}
+
+	/**
+	 * Mock a http request.
+	 *
+	 * Hooks into 'pre_http_request' filter.
+	 *
+	 * https://developer.wordpress.org/reference/hooks/pre_http_request/
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param callback $callback The callback function.
+	 */
+	protected function mock_http_request( $callback ) {
+		\add_filter( 'pre_http_request', $callback, 10, 3 );
+	}
 }

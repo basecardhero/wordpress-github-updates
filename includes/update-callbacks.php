@@ -2,14 +2,15 @@
 /**
  * Plugin updates callbacks.
  *
- * @since 0.1.0
+ * @since 0.2.0
  *
  * @package WordPress_Github_Updates
  */
 
 namespace WordPress_Github_Updates\Updates\Callbacks;
 
-use function WordPress_Github_Updates\Updates\Functions\get_plugin_source_data;
+use function WordPress_Github_Updates\Updates\Functions\get_plugin_release;
+use function WordPress_Github_Updates\Updates\Functions\get_plugin_release_asset;
 
 if ( ! \defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,6 +23,9 @@ if ( ! \defined( 'ABSPATH' ) ) {
  * Allows for 3rd party hosted plugins to hook into the WordPress
  * plugin update api.
  *
+ * See https://make.wordpress.org/core/2021/06/29/introducing-update-uri-plugin-header-in-wordpress-5-8/
+ * See https://developer.wordpress.org/reference/hooks/update_plugins_hostname/
+ *
  * @since 0.2.0
  *
  * @param array|false $update      The update array of false.
@@ -29,28 +33,29 @@ if ( ! \defined( 'ABSPATH' ) ) {
  * @param string      $plugin_file Plugin filename.
  * @param string[]    $locales     Installed locales to look up translations for.
  *
- * @return array|false The update array or false.
+ * @return object|false The update array or false.
  */
 function check_plugin_update( $update, $plugin_data, $plugin_file, $locales ) {
 	if ( 'wordpress-github-updates/wordpress-github-updates.php' !== $plugin_file ) {
 		return $update;
 	}
 
-	// var_dump( $plugin_data ); exit;
+	$plugin_release = get_plugin_release();
 
-	$source_data = get_plugin_source_data();
-
-	if ( isset( $source_data['zipball_url'] ) ) {
-		$update               = (object) $update;
-		$update->slug         = \plugin_basename( WORDPRESS_GITHUB_UPDATES_FILE );
-		$update->version      = \str_replace( 'v', '', $source_data['tag_name'] );
-		$update->url          = $plugin_data['PluginURI'];
-		$update->package      = $source_data['zipball_url'];
-		// $update->tested       = '6.2.2'; // $plugin_data['Tested up to'];
-		$update->requires_php = $plugin_data['RequiresPHP'];
+	if ( empty( $plugin_release ) ) {
+		return $update;
 	}
 
-	// var_dump( $update ); exit;
+	$asset = get_plugin_release_asset( $plugin_release );
+
+	if ( $asset ) {
+		$update          = (object) $update;
+		$update->id      = $plugin_data['PluginURI'];
+		$update->slug    = \plugin_basename( WORDPRESS_GITHUB_UPDATES_FILE );
+		$update->version = \str_replace( 'v', '', $plugin_release['tag_name'] );
+		$update->url     = $plugin_data['PluginURI'];
+		$update->package = $asset['browser_download_url'];
+	}
 
 	return $update;
 }
