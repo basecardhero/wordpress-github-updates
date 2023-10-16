@@ -6,8 +6,8 @@
  * Author: BaseCardHero
  * Author URI: https://basecardhero.com
  * Version: 0.1.0
- * Requires at least: 6.0
- * Requires PHP: 7.4
+ * Requires at least: 6.1
+ * Requires PHP: 8.0
  * Text Domain: wordpress-github-updates
  * Domain Path: /languages
  * License: GPLv2 or later
