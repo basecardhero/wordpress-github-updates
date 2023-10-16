@@ -32,7 +32,11 @@
 	<config name="minimum_supported_wp_version" value="6.0"/>
 
 	<rule ref="WordPress">
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax.Found"/>
+		<exclude name="WordPress.WP.Capabilities.Unknown" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
+		<exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.Found" />
+		<exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed" />
 	</rule>
 
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
